@@ -1,13 +1,13 @@
 <?php
-// config.php
-$host = "localhost";
+$host = "127.0.0.1";
 $username = "root";
 $password = "";
 $database = "smartdry_agro";
+$port = 3307; // ganti sesuai port MySQL kamu
 
-$conn = new mysqli($host, $username, $password, $database);
+$db = new mysqli($host, $username, $password, $database, $port);
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if ($db->connect_error) {
+    die("Connection failed: " . $db->connect_error);
 }
 ?>
