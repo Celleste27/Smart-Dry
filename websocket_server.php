@@ -1,6 +1,7 @@
 <?php
-// websocket_server.php
+// websocket_server.php - Updated with notifications
 require 'vendor/autoload.php';
+require 'notifications.php'; // Include notification system
 
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
@@ -11,11 +12,13 @@ use Ratchet\WebSocket\WsServer;
 class SensorWebSocket implements MessageComponentInterface {
     protected $clients;
     protected $db;
+    protected $notificationSystem;
 
     public function __construct() {
         $this->clients = new \SplObjectStorage;
         $this->connectDB();
-        echo "WebSocket Server initialized\n";
+        $this->notificationSystem = new NotificationSystem($this->db);
+        echo "WebSocket Server initialized with notification system\n";
     }
 
     private function connectDB() {
@@ -72,8 +75,20 @@ class SensorWebSocket implements MessageComponentInterface {
         // Save sensor data to database
         $this->saveSensorData($data);
         
+        // Check thresholds and create notifications
+        $notifications = checkSensorThresholds($data, $this->notificationSystem);
+        
+        if (!empty($notifications)) {
+            echo "Generated notifications: " . implode(", ", $notifications) . "\n";
+        }
+        
         // Broadcast to all connected clients
         $this->broadcastSensorData($data);
+        
+        // Also broadcast notifications if any
+        if (!empty($notifications)) {
+            $this->broadcastNotifications($notifications);
+        }
     }
 
     private function saveSensorData($data) {
@@ -101,18 +116,36 @@ class SensorWebSocket implements MessageComponentInterface {
         }
     }
 
+    private function broadcastNotifications($notifications) {
+        $response = [
+            'type' => 'notifications',
+            'notifications' => $notifications,
+            'timestamp' => date('Y-m-d H:i:s')
+        ];
+
+        $message = json_encode($response);
+        
+        foreach ($this->clients as $client) {
+            $client->send($message);
+        }
+        
+        echo "Notifications broadcasted: " . count($notifications) . " items\n";
+    }
+
     private function sendLatestData(ConnectionInterface $conn) {
         $latest_data = $this->getLatestData();
         $chart_data = $this->getChartData();
+        $recent_notifications = $this->notificationSystem->getRecentNotifications(5);
 
         $response = [
             'type' => 'initial_data',
             'latest_data' => $latest_data,
-            'chart_data' => $chart_data
+            'chart_data' => $chart_data,
+            'notifications' => $recent_notifications
         ];
 
         $conn->send(json_encode($response));
-        echo "Sent initial data to client {$conn->resourceId}\n";
+        echo "Sent initial data with notifications to client {$conn->resourceId}\n";
     }
 
     private function getLatestData() {
@@ -172,7 +205,7 @@ class SensorWebSocket implements MessageComponentInterface {
 }
 
 // Check if required port is available
-$port = 8080;
+$port = 8091;
 $address = '0.0.0.0'; // Listen on all interfaces
 
 echo "Starting SmartDry Agro WebSocket Server...\n";
