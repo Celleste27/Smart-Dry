@@ -23,8 +23,29 @@
             <!-- Tambahan menu navigasi -->
             <div class="menu-nav">
                 <a href="#" class="active">Dashboard</a>
-                <a href="#">Notifikasi</a>
+                <a href="#" id="notifications-tab">Notifikasi <span class="notification-badge" id="notification-badge">0</span></a>
                 <a href="#">Kontrol</a>
+            </div>
+        </div>
+
+        <!-- Panel Notifikasi -->
+        <div class="notifications-panel" id="notifications-panel">
+            <div class="notifications-header">
+                <h3>📢 Notifikasi Sistem</h3>
+                <div class="notification-actions">
+                    <button id="mark-all-read">Tandai Sudah Dibaca</button>
+                    <button id="clear-notifications">Bersihkan Semua</button>
+                </div>
+            </div>
+            <div class="notifications-list" id="notifications-list">
+                <div class="notification-placeholder">
+                    <p>Tidak ada notifikasi</p>
+                </div>
+                <!-- Notifikasi akan dimuat di sini -->
+            </div>
+            <div class="notifications-footer">
+                <span id="notification-count">0 notifikasi</span>
+                <span class="last-update-notif">Terakhir diperbarui: <span id="notif-update-time">-</span></span>
             </div>
         </div>
         
