@@ -1,0 +1,149 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* HEADER */
+.header {
+    width: 100%;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.left-header {
+    display: flex;
+    align-items: center;
+}
+
+.logo-img {
+    width: 85px;
+    margin-right: 15px;
+}
+
+.brand-text {
+    font-size: 22px;
+    font-weight: bold;
+    color: #2d4a1f;
+}
+
+.menu a {
+    margin-left: 20px;
+    font-size: 15px;
+    text-decoration: none;
+    color: #444;
+}
+
+.menu .active {
+    font-weight: bold;
+    color: #2d4a1f;
+}
+
+/* MAIN AREA */
+.main-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.page-title {
+    color: #2d4a1f;
+    margin-bottom: 35px;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+/* CARD LEBIH BESAR */
+.card {
+    width: 550px;
+    background: white;
+    padding: 40px;
+    border-radius: 18px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.15);
+}
+
+/* ITEM LEBIH GEDE */
+.control-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 0;
+    border-bottom: 1px solid #e6e6e6;
+    font-size: 20px;
+}
+
+.control-item:last-child {
+    border-bottom: none;
+}
+
+/* SWITCH LEBIH GEDE */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 65px;
+    height: 34px;
+}
+
+.switch input {
+    display: none;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    background: #ccc;
+    border-radius: 34px;
+    top: 0;
+    left: 0;
+    width: 65px;
+    height: 34px;
+    transition: .3s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background: white;
+    border-radius: 50%;
+    transition: .3s;
+}
+
+input:checked + .slider {
+    background: #2d4a1f;
+}
+
+input:checked + .slider:before {
+    transform: translateX(30px);
+}
+
+/* BUTTON LEBIH GEDE */
+.btn {
+    margin-top: 30px;
+    width: 100%;
+    padding: 15px;
+    background: #2d4a1f;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.btn:hover {
+    background: #24401b;
+}
+
+.footer {
+    margin-top: 25px;
+    font-size: 14px;
+    color: #666;
+}
